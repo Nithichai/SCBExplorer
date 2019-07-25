@@ -12,7 +12,10 @@ import com.nopyjf.projectscbexplorer.R
 import com.nopyjf.projectscbexplorer.activity.ProfileActivity
 
 
-class MainShowFragment(private val refreshToken: String) : Fragment() {
+class MapShowFragment(
+    private val accressToken: String,
+    private val refreshToken: String
+) : Fragment() {
 
     private lateinit var profileButton: Button
 
