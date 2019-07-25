@@ -1,4 +1,5 @@
-package com.nopyjf.projectscbexplorer.activity
+package com.nopyjf.projectscbexplorer.fragment
+
 
 import android.app.Activity
 import android.app.ListActivity
@@ -9,8 +10,11 @@ import android.graphics.Color
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -20,7 +24,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.nopyjf.projectscbexplorer.R
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+
+class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -35,15 +40,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         private const val REQUEST_CHECK_SETTINGS = 2
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_maps)
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Auth.checking()
+        val view = inflater.inflate(R.layout.fragment_map, container, false)
+        val mapFragment =
+            childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        return view
+    }
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.activity!!.applicationContext)
 
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
@@ -77,22 +89,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
-    public override fun onResume() {
+    override fun onResume() {
         super.onResume()
         if (!locationUpdateState) {
             startLocationUpdates()
         }
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
@@ -102,19 +105,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
 
     override fun onMarkerClick(p0: Marker?): Boolean {
-        val intent = Intent(this@MapsActivity, ListActivity::class.java)
+        val intent = Intent(activity, ListActivity::class.java)
         startActivity(intent)
-        return false
+        return true
     }
 
     private fun setUpMap() {
         if (ActivityCompat.checkSelfPermission(
-                this,
+                this.activity!!.applicationContext,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
-                this,
+                this.activity!!,
                 arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE
             )
             return
@@ -132,7 +135,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         map.uiSettings.isMapToolbarEnabled = false
         map.uiSettings.isIndoorLevelPickerEnabled = true
 
-        fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
+        fusedLocationClient.lastLocation.addOnSuccessListener(this.activity!!) { location ->
             // Got last known location. In some rare situations this can be null.
             if (location != null) {
                 lastLocation = location
@@ -150,7 +153,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
         val markerOptions = MarkerOptions()
             .position(location)
-            .icon(foodIcon)
+//            .icon(foodIcon)
 
 //        val titleStr = getAddress(location)  // add these two lines
 //        markerOptions.title(titleStr)
@@ -184,12 +187,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     private fun startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(
-                this,
+                this.activity!!.applicationContext,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
-                this,
+                this.activity!!,
                 arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
                 LOCATION_PERMISSION_REQUEST_CODE
             )
@@ -206,7 +209,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
         val builder = LocationSettingsRequest.Builder()
             .addLocationRequest(locationRequest)
-        val client = LocationServices.getSettingsClient(this)
+        val client = LocationServices.getSettingsClient(this.activity!!)
         val task = client.checkLocationSettings(builder.build())
 
         task.addOnSuccessListener {
@@ -221,7 +224,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                     // Show the dialog by calling startResolutionForResult(),
                     // and check the result in onActivityResult().
                     e.startResolutionForResult(
-                        this@MapsActivity,
+                        this.activity,
                         REQUEST_CHECK_SETTINGS
                     )
                 } catch (sendEx: IntentSender.SendIntentException) {
@@ -234,23 +237,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private fun drawCircle(location: LatLng) {
         // Instantiating CircleOptions to draw a circle around the marker
         val circleOptions = CircleOptions()
-
-        // Specifying the center of the circle
         circleOptions.center(location)
-
-        // Radius of the circle
         circleOptions.radius(1000.0)
-
-        // Border color of the circle
         circleOptions.strokeColor(R.color.colorPrimary)
-
-        // Fill color of the circle
         circleOptions.fillColor(Color.alpha(0))
-
-        // Border width of the circle
         circleOptions.strokeWidth(10f)
-
-        // Adding the circle to the GoogleMap
         map.addCircle(circleOptions)
     }
 
@@ -270,4 +261,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         map.addMarker(markerOptions)
         map.setOnMarkerClickListener(this)
     }
+
+
 }

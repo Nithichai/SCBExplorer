@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:card_view="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:paddingLeft="16dp"
+              android:paddingTop="6dp"
+              android:paddingBottom="6dp"
+              android:paddingRight="16dp">
+
+    <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="113dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            card_view:cardBackgroundColor="#ffff"
+            card_view:cardCornerRadius="4dp"
+            card_view:cardElevation="2sp">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp">
+
+                <ImageView
+                        android:id="@+id/avatarImage"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="12dp"
+                        android:padding="3dp"
+                        android:src="#FFC107"/>
+
+                <TextView
+                        android:id="@+id/titleTextView"
+                        style="@style/Base.TextAppearance.AppCompat.Subhead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_toRightOf="@+id/avatarImage"
+                        android:gravity="center_vertical"
+                        android:text="Menu Name...."
+                        android:textSize="18sp"
+                        android:textColor="#DF000000"/>
+
+                <TextView
+                        android:id="@+id/subTitleTextView"
+                        style="@style/Base.TextAppearance.AppCompat.Body1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/titleTextView"
+                        android:layout_marginBottom="8dp"
+                        android:layout_toRightOf="@+id/avatarImage"
+                        android:gravity="center_vertical"
+                        android:lines="1"
+                        android:text="Retuarents Name..."
+                        android:textColor="#A8000000"/>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:layout_marginTop="30dp">
+
+                    <ImageView
+                            android:id="@+id/next"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="#FF0000"/>
+                </LinearLayout>
+
+                <Button
+                        android:id="@+id/timeOut"
+                        style="@style/Base.TextAppearance.AppCompat.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/titleTextView"
+                        android:layout_marginLeft="140dp"
+                        android:layout_marginTop="30dp"
+                        android:lines="1"
+                        android:text="สิ้นสุดในเวลา 00.04.55"
+                        android:textColor="#E91E63"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

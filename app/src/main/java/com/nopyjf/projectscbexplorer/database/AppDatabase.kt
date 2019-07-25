@@ -24,7 +24,6 @@ abstract class AppDatabase: RoomDatabase()  {
         fun getInstance(context: Context): AppDatabase {
 
             instance?.let {
-                Log.e("Nopy", "OK")
                 return it
             }
 
@@ -40,7 +39,7 @@ abstract class AppDatabase: RoomDatabase()  {
                         Log.d(TAG, "onCreate")
                     }
                 })
-//                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+                    .addMigrations()
                     .fallbackToDestructiveMigration()
                     .build().also {
                         instance = it
