@@ -33,6 +33,15 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val prefs = getSharedPreferences("SCBExplorerSharedPref", MODE_PRIVATE).edit()
+        prefs.clear()
+        prefs.apply()
+
+        val prefsPayment
+                = getSharedPreferences("SCBExplorerSharedPrefPayment", MODE_PRIVATE).edit()
+        prefsPayment.clear()
+        prefsPayment.apply()
+
         loginBtn = findViewById(R.id.login_btn)
         loginBtn.setOnClickListener {
             getDeeplink()

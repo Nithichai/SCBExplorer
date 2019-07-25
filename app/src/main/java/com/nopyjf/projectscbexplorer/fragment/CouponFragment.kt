@@ -60,7 +60,6 @@ class CouponFragment : Fragment() {
                     subtitle.text = coupon.merchant_name
                     Glide.with(activity!!.applicationContext).load(coupon.image_path)
                         .apply(RequestOptions.circleCropTransform())
-                        .into(avatarImage)
                 }
             }
         }
@@ -79,9 +78,20 @@ class CouponFragment : Fragment() {
     }
 
     inner class CustomHolder(view: View) : RecyclerView.ViewHolder(view) {
+
         val title: TextView = view.titleTextView
         val subtitle: TextView = view.subTitleTextView
         val avatarImage: ImageView = view.avatarImage
+
+        init {
+            view.setOnClickListener {
+                var myFragment = CouponDialogFragment(
+
+                )
+                myFragment.show(activity!!.supportFragmentManager, "SCB-EXPLORER")
+            }
+        }
+
     }
 
     inner class CustomLoadingListItemCreator : com.paginate.recycler.LoadingListItemCreator {
@@ -98,7 +108,6 @@ class CouponFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val tmp = holder as FooterHolder
             tmp.desText.text = "Loading"
-
         }
     }
 

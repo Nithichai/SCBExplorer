@@ -1,10 +1,11 @@
 package com.nopyjf.projectscbexplorer.service
 
-import com.nopyjf.projectscbexplorer.vo.Coupon
+import com.nopyjf.projectscbexplorer.vo.Merchant
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface MerchantService {
-    @GET("citizen/123456789")
-    fun getMerchant(): Call<ArrayList<Coupon>>
+    @GET("{id}")
+    fun getMerchant(@Path(value="id") id: Int): Call<Merchant>
 }

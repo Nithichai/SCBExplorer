@@ -2,13 +2,11 @@ package com.nopyjf.projectscbexplorer.fragment
 
 
 import android.app.Activity
-import android.app.ListActivity
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
-import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +21,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.nopyjf.projectscbexplorer.R
+import com.nopyjf.projectscbexplorer.activity.MerchantActivity
 
 
 class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -34,6 +33,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
     private lateinit var locationCallback: LocationCallback
     private lateinit var locationRequest: LocationRequest
     private var locationUpdateState = false
+
+    private var merchantMarker: ArrayList<MarkerOptions> = ArrayList()
+    private var myMarker = MarkerOptions()
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
@@ -54,24 +56,22 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.activity!!.applicationContext)
-
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
                 super.onLocationResult(p0)
-
-                lastLocation = Location(LocationManager.GPS_PROVIDER)
-                lastLocation.latitude = 12.786981
-                lastLocation.longitude = 100.906386
                 drawCircle(LatLng(lastLocation.latitude, lastLocation.longitude))
                 placeMarkerOnMap(LatLng(lastLocation.latitude, lastLocation.longitude))
-
                 getNearShop()
             }
         }
-
         createLocationRequest()
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        map = googleMap
+        map.setOnMarkerClickListener(this)
+        setUpMap()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -96,16 +96,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         }
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        map = googleMap
-
-        map.setOnMarkerClickListener(this)
-
-        setUpMap()
-    }
-
     override fun onMarkerClick(p0: Marker?): Boolean {
-        val intent = Intent(activity, ListActivity::class.java)
+        val intent = Intent(activity, MerchantActivity::class.java)
         startActivity(intent)
         return true
     }
@@ -122,16 +114,14 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
             )
             return
         }
-
-//        map.isMyLocationEnabled = true
         map.mapType = GoogleMap.MAP_TYPE_NORMAL
 
         map.setMinZoomPreference(14.0f)
         map.setMaxZoomPreference(14.5f)
 
         map.uiSettings.isZoomControlsEnabled = true
-        map.uiSettings.setAllGesturesEnabled(false)
-        map.uiSettings.isZoomGesturesEnabled = true
+//        map.uiSettings.setAllGesturesEnabled(false)
+//        map.uiSettings.isZoomGesturesEnabled = true
         map.uiSettings.isMapToolbarEnabled = false
         map.uiSettings.isIndoorLevelPickerEnabled = true
 
@@ -139,8 +129,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
             // Got last known location. In some rare situations this can be null.
             if (location != null) {
                 lastLocation = location
-//                val currentLatLng = LatLng(location.latitude, location.longitude)
-                val currentLatLng = LatLng(12.786981, 100.90638)
+                val currentLatLng = LatLng(location.latitude, location.longitude)
                 placeMarkerOnMap(currentLatLng)
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
             }
@@ -148,7 +137,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
     }
 
     private fun placeMarkerOnMap(location: LatLng) {
-        val foodIcon: BitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.ic_food)
+//        val foodIcon: BitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.ic_food)
 
 
         val markerOptions = MarkerOptions()
@@ -198,7 +187,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
             )
             return
         }
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null /* Looper */)
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
     }
 
     private fun createLocationRequest() {
@@ -236,6 +225,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
 
     private fun drawCircle(location: LatLng) {
         // Instantiating CircleOptions to draw a circle around the marker
+        map.clear()
         val circleOptions = CircleOptions()
         circleOptions.center(location)
         circleOptions.radius(1000.0)
@@ -243,13 +233,13 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListe
         circleOptions.fillColor(Color.alpha(0))
         circleOptions.strokeWidth(10f)
         map.addCircle(circleOptions)
+
     }
 
     private fun getNearShop() {
         val shops = ArrayList<LatLng>()
         shops.add(LatLng(12.784751, 100.908223))
         shops.add(LatLng(12.784765, 100.90785))
-
         for (latlng in shops) {
             placeShopMarkerOnMap(latlng)
         }

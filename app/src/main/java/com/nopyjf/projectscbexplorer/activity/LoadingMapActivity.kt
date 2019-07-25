@@ -48,27 +48,26 @@ class LoadingMapActivity : AppCompatActivity() {
             val responseData = response.body() ?: return
             val accessToken = responseData.data.accessToken
             val refreshToken = responseData.data.refreshToken
-            saveToken(accessToken, refreshToken)
+            val resourceOwnerId = response.headers().get("resourceOwnerId")!!
+            saveToken(accessToken, refreshToken, resourceOwnerId)
             gotoMapPage()
         }
     }
 
-    private fun saveToken(accessToken: String, refreshToken: String) {
+    private fun saveToken(accessToken: String, refreshToken: String, resourceOwnerId: String) {
         val prefs = getSharedPreferences("SCBExplorerSharedPref", MODE_PRIVATE).edit()
         prefs.putString("accessToken", accessToken)
         prefs.putString("refreshToken", refreshToken)
+        prefs.putString("refreshToken", resourceOwnerId)
         prefs.apply()
     }
 
     private fun gotoMapPage() {
-        val intent = Intent(this@LoadingMapActivity, MapsActivity::class.java)
-
+        val intent = Intent(this@LoadingMapActivity, MainActivity::class.java)
         val prefs = getSharedPreferences("SCBExplorerSharedPref", Context.MODE_PRIVATE)
         val accessToken = prefs.getString("accessToken", null) ?: return
         val refreshToken = prefs.getString("refreshToken", null) ?: return
-
-        intent.putExtra("accessToken", accessToken)
-        intent.putExtra("refreshToken", refreshToken)
+        Log.i("Nopy", "$accessToken, $refreshToken")
         startActivity(intent)
     }
 }

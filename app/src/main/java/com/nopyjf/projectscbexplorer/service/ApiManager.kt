@@ -22,6 +22,14 @@ object ApiManager {
         createService<CouponService>("http://192.168.101.44:9000/api/coupon/")
     }
 
+    val merchantService by lazy {
+        createService<MerchantService>("http://192.168.101.44:9000/api/merchant/")
+    }
+
+    val transactionService by lazy {
+        createService<TransactionService>("https://api.partners.scb/partners/sandbox/v2/deeplink/")
+    }
+
     private inline fun <reified T> createService(baseUrl: String): T =
         Retrofit.Builder()
             .baseUrl(baseUrl)

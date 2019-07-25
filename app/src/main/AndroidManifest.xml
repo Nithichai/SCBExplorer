@@ -17,14 +17,23 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
+        <activity android:name=".activity.AfterPaymentActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                        android:host="payment"
+                        android:scheme="scbexplorer"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.MerchantActivity">
+        </activity>
         <activity
                 android:name=".activity.MainActivity"
-                android:label="TEST TEST TEST">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+                android:label="SCB Explorer">
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -43,11 +52,11 @@
                 android:label="Map">
         </activity>
         <activity android:name=".activity.LoginActivity">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN"/>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
-            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".activity.LoadingMapActivity">
             <intent-filter>

@@ -4,16 +4,17 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical"
-              android:paddingLeft="16dp"
-              android:paddingTop="6dp"
-              android:paddingBottom="6dp"
-              android:paddingRight="16dp">
+              android:paddingLeft="0dp"
+              android:paddingTop="0dp"
+              android:paddingBottom="0dp"
+              android:paddingRight="0dp">
 
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="113dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginLeft="30dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginBottom="2dp"
             card_view:cardBackgroundColor="#ffff"
             card_view:cardCornerRadius="4dp"
             card_view:cardElevation="2sp">
@@ -57,6 +58,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/titleTextView"
                         android:layout_marginBottom="8dp"
+                        android:layout_marginRight="30dp"
                         android:layout_toRightOf="@+id/avatarImage"
                         android:gravity="center_vertical"
                         android:lines="1"
@@ -65,7 +67,7 @@
 
                 <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="92dp"
                         android:gravity="right"
                         android:layout_marginTop="30dp">
 
@@ -83,7 +85,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/titleTextView"
-                        android:layout_marginLeft="140dp"
+                        android:layout_marginLeft="250dp"
                         android:layout_marginTop="30dp"
                         android:lines="1"
                         android:text="สิ้นสุดในเวลา 00.04.55"
