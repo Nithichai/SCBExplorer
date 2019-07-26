@@ -69,28 +69,27 @@
                         android:layout_width="match_parent"
                         android:layout_height="92dp"
                         android:gravity="right"
-                        android:layout_marginTop="30dp">
+                        android:layout_marginTop="40dp">
 
                     <ImageView
                             android:id="@+id/next"
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:background="#FF0000"/>
+                            android:src="@drawable/arrow"/>
                 </LinearLayout>
 
-                <Button
+                <TextView
                         android:id="@+id/timeOut"
                         style="@style/Base.TextAppearance.AppCompat.Body1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/titleTextView"
-                        android:layout_marginLeft="250dp"
-                        android:layout_marginTop="30dp"
+                        android:layout_marginLeft="120dp"
+                        android:layout_marginTop="40dp"
                         android:lines="1"
                         android:text="สิ้นสุดในเวลา 00.04.55"
-                        android:textColor="#E91E63"/>
-
+                        android:textColor="#E84F5B"/>
             </RelativeLayout>
 
         </LinearLayout>

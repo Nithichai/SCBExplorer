@@ -242,7 +242,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         circleOptions.radius(1000.0)
 
         // Border color of the circle
-        circleOptions.strokeColor(R.color.colorPrimary)
+        circleOptions.strokeColor(R.color.red)
 
         // Fill color of the circle
         circleOptions.fillColor(Color.alpha(0))
@@ -257,8 +257,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private fun getNearShop() {
         val shops = ArrayList<LatLng>()
         shops.add(LatLng(12.784751, 100.908223))
-        shops.add(LatLng(12.784765, 100.90785))
-
         for (latlng in shops) {
             placeShopMarkerOnMap(latlng)
         }

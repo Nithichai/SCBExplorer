@@ -29,8 +29,10 @@
                         android:scheme="scbexplorer"/>
             </intent-filter>
         </activity>
+
         <activity android:name=".activity.MerchantActivity">
         </activity>
+
         <activity
                 android:name=".activity.MainActivity"
                 android:label="SCB Explorer">

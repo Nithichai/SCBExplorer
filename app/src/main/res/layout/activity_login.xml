@@ -111,7 +111,7 @@
             android:layout_marginBottom="25dp"
             android:gravity="center"
 
-            android:text="@string/login_btn"
+            android:text="By... Terra team"
             android:textColor="#FFFFFF"
             android:fontFamily="@font/josefin_sans_regular"/>
 
